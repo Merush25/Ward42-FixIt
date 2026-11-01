@@ -1,0 +1,106 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Coordinator Panel | Ward 42 Fix-It
+{% endblock %}
+
+{% block content %}
+
+<section class="bg-white p-4 p-md-5 rounded shadow-sm">
+
+    <p class="hero-label">
+        COORDINATOR MANAGEMENT
+    </p>
+
+    <h1>Welcome, {{ username }}</h1>
+
+    <p class="lead">
+        Manage community service reports
+        submitted by Ward 42 residents.
+    </p>
+
+    <div class="alert alert-success" role="status">
+        You are securely signed in
+        to the Coordinator Panel.
+    </div>
+
+    <h2 class="h4 mt-4 mb-3">
+        Management Tools
+    </h2>
+
+    <!-- Coordinator Management Cards -->
+    <div class="row g-3">
+
+        <!-- All Reports -->
+        <div class="col-12 col-md-6">
+
+            <div class="dashboard-card">
+
+                <h3 class="h5">
+                    All Reports
+                </h3>
+
+                <p>
+                    View submitted reports,
+                    filter by category or status,
+                    and update report progress.
+                </p>
+
+                <a href="{{ url_for('all_reports') }}"
+                   class="btn btn-dark w-100">
+                    VIEW ALL REPORTS
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- Analytics Dashboard -->
+        <div class="col-12 col-md-6">
+
+            <div class="dashboard-card">
+
+                <h3 class="h5">
+                    Analytics Dashboard
+                </h3>
+
+                <p>
+                    View report totals,
+                    problem categories
+                    and current status statistics.
+                </p>
+
+                <a href="{{ url_for('coordinator_dashboard') }}"
+                   class="btn btn-dark w-100">
+                    VIEW DASHBOARD
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Secure Logout -->
+    <div class="mt-4 pt-3 border-top">
+
+        <form method="POST"
+              action="{{ url_for('coordinator_logout') }}">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ csrf_token() }}">
+
+            <button type="submit"
+                    class="btn btn-outline-danger">
+                SIGN OUT
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

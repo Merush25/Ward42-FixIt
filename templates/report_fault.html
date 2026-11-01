@@ -1,0 +1,284 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Report a Fault | Ward 42 Fix-It
+{% endblock %}
+
+{% block content %}
+
+<section class="bg-white p-4 p-md-5 rounded shadow-sm">
+
+    <p class="hero-label">
+        STREET &amp; INFRASTRUCTURE SERVICES
+    </p>
+
+    <h1>Report a Fault</h1>
+
+    <p>
+        Help improve your neighbourhood by reporting
+        a municipal service problem in Ward 42.
+    </p>
+
+    <form id="report-fault-form"
+          method="POST"
+          enctype="multipart/form-data"
+          data-previous-submit="{{ 'true' if request.method == 'POST' else 'false' }}"
+          novalidate>
+
+        <!-- CSRF Security Token -->
+        <input type="hidden"
+               name="csrf_token"
+               value="{{ csrf_token() }}">
+
+
+        <!-- PROBLEM CATEGORY -->
+        <div class="mb-3">
+
+            <label for="category" class="form-label">
+                Problem Category
+            </label>
+
+            <select id="category"
+                    name="category"
+                    class="form-select"
+                    aria-describedby="category-client-error"
+                    required>
+
+                <option value="">Select a category</option>
+
+                {% for item in [
+                    "Pothole",
+                    "Water leak",
+                    "Streetlight",
+                    "Illegal dumping",
+                    "Other"
+                ] %}
+
+                    <option value="{{ item }}"
+                        {% if request.form.get('category') == item %}
+                            selected
+                        {% endif %}>
+                        {{ item }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <p id="category-client-error"
+               class="text-danger small"
+               role="alert"></p>
+
+            {% if errors.get("category") %}
+                <p class="text-danger small" role="alert">
+                    {{ errors["category"] }}
+                </p>
+            {% endif %}
+
+        </div>
+
+
+        <!-- STREET OR LANDMARK -->
+        <div class="mb-3">
+
+            <label for="street" class="form-label">
+                Street Name or Landmark
+            </label>
+
+            <input type="text"
+                   id="street"
+                   name="street"
+                   class="form-control"
+                   maxlength="150"
+                   value="{{ request.form.get('street', '') }}"
+                   aria-describedby="street-client-error"
+                   required>
+
+            <p id="street-client-error"
+               class="text-danger small"
+               role="alert"></p>
+
+            {% if errors.get("street") %}
+                <p class="text-danger small" role="alert">
+                    {{ errors["street"] }}
+                </p>
+            {% endif %}
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+        <div class="mb-3">
+
+            <label for="description" class="form-label">
+                Describe the Problem
+            </label>
+
+            <textarea id="description"
+                      name="description"
+                      class="form-control"
+                      rows="4"
+                      minlength="10"
+                      maxlength="500"
+                      aria-describedby="description-help description-client-error"
+                      required>{{ request.form.get('description', '') }}</textarea>
+
+            <div id="description-help" class="form-text">
+                Enter between 10 and 500 characters.
+            </div>
+
+            <p id="description-client-error"
+               class="text-danger small"
+               role="alert"></p>
+
+            {% if errors.get("description") %}
+                <p class="text-danger small" role="alert">
+                    {{ errors["description"] }}
+                </p>
+            {% endif %}
+
+        </div>
+
+
+        <!-- REPORTER NAME -->
+        <div class="mb-3">
+
+            <label for="reporter_name" class="form-label">
+                Your Name
+            </label>
+
+            <input type="text"
+                   id="reporter_name"
+                   name="reporter_name"
+                   class="form-control"
+                   maxlength="100"
+                   value="{{ request.form.get('reporter_name', '') }}"
+                   autocomplete="name"
+                   aria-describedby="reporter_name-client-error"
+                   required>
+
+            <p id="reporter_name-client-error"
+               class="text-danger small"
+               role="alert"></p>
+
+            {% if errors.get("reporter_name") %}
+                <p class="text-danger small" role="alert">
+                    {{ errors["reporter_name"] }}
+                </p>
+            {% endif %}
+
+        </div>
+
+
+        <!-- CELLPHONE NUMBER -->
+        <div class="mb-3">
+
+            <label for="reporter_cell" class="form-label">
+                Cellphone Number
+            </label>
+
+            <input type="tel"
+                   id="reporter_cell"
+                   name="reporter_cell"
+                   class="form-control"
+                   inputmode="numeric"
+                   autocomplete="tel"
+                   pattern="0[0-9]{9}"
+                   maxlength="10"
+                   value="{{ request.form.get('reporter_cell', '') }}"
+                   aria-describedby="cell-help reporter_cell-client-error"
+                   required>
+
+            <div id="cell-help" class="form-text">
+                Enter a 10-digit South African number
+                starting with 0.
+            </div>
+
+            <p id="reporter_cell-client-error"
+               class="text-danger small"
+               role="alert"></p>
+
+            {% if errors.get("reporter_cell") %}
+                <p class="text-danger small" role="alert">
+                    {{ errors["reporter_cell"] }}
+                </p>
+            {% endif %}
+
+        </div>
+
+
+        <!-- PHOTO UPLOAD -->
+        <div class="mb-4">
+
+            <label for="photo" class="form-label">
+                Upload a Photo (Optional)
+            </label>
+
+            <input type="file"
+                   id="photo"
+                   name="photo"
+                   class="form-control"
+                   accept=".jpg,.jpeg,.png,.webp">
+
+            <div class="form-text">
+                JPEG, PNG or WebP. Maximum 2 MB.
+            </div>
+
+            {% if errors.get("photo") %}
+                <p class="text-danger small mt-1"
+                   role="alert">
+                    {{ errors["photo"] }}
+                </p>
+            {% endif %}
+
+        </div>
+
+
+        <!-- GENERAL SUBMISSION ERROR -->
+        {% if errors.get("form") %}
+            <p class="text-danger" role="alert">
+                {{ errors["form"] }}
+            </p>
+        {% endif %}
+
+
+        <!-- SAVE DRAFT MESSAGE -->
+        <p id="draft-message"
+           class="small text-muted"
+           role="status"
+           aria-live="polite"></p>
+
+
+        <!-- SUBMIT REPORT -->
+        <button type="submit"
+                class="report-action">
+            SUBMIT REPORT
+        </button>
+
+
+        <!-- CLEAR DRAFT -->
+        <button type="button"
+                id="clear-draft"
+                class="btn btn-outline-secondary mt-3">
+            Clear Saved Draft
+        </button>
+
+        <p class="action-note">
+            Your report will be securely recorded.
+            Please keep your reference number
+            after submitting.
+        </p>
+
+    </form>
+
+</section>
+
+
+<!-- EXTERNAL JAVASCRIPT -->
+<script
+    src="{{ url_for('static', filename='js/report_form.js') }}"
+    defer>
+</script>
+
+{% endblock %}

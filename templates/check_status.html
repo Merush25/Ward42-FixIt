@@ -1,0 +1,103 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Check Status | Ward 42 Fix-It
+{% endblock %}
+
+{% block content %}
+
+<section class="bg-white p-4 p-md-5 rounded shadow-sm"
+         aria-labelledby="status-title">
+
+    <p class="hero-label">
+        STREET &amp; INFRASTRUCTURE SERVICES
+    </p>
+
+    <h1 id="status-title">Check Report Status</h1>
+
+    <p>
+        Enter your reference number to check
+        the progress of your report.
+    </p>
+
+    <!-- Reference Number Search -->
+    <form method="POST"
+          action="{{ url_for('check_status') }}">
+
+        <!-- CSRF Protection -->
+        <input type="hidden"
+               name="csrf_token"
+               value="{{ csrf_token() }}">
+
+        <div class="mb-3">
+
+            <label for="reference" class="form-label">
+                Report Reference Number
+            </label>
+
+            <input type="text"
+                   id="reference"
+                   name="reference"
+                   class="form-control"
+                   placeholder="e.g. W42-0001"
+                   maxlength="30"
+                   autocomplete="off"
+                   required>
+
+        </div>
+
+        <button type="submit" class="report-action">
+            CHECK STATUS
+        </button>
+
+    </form>
+
+    <!-- Report Status Result -->
+    {% if report %}
+
+    <div class="status-result mt-4"
+         role="status">
+
+        <h2 class="h4">
+            Reference: {{ report.reference }}
+        </h2>
+
+        <p>
+            <strong>Current Status:</strong>
+            {{ report.status }}
+        </p>
+
+        {% if report.status == "Open" %}
+            <p>
+                Your report has been received
+                and is awaiting attention.
+            </p>
+
+        {% elif report.status == "In progress" %}
+            <p>
+                Your report is currently being attended to.
+            </p>
+
+        {% elif report.status == "Closed" %}
+            <p>
+                Your report has been marked as resolved.
+            </p>
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+    <!-- Reference Not Found -->
+    {% if error %}
+
+    <p class="text-danger mt-3" role="alert">
+        {{ error }}
+    </p>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

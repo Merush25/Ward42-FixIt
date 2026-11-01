@@ -1,0 +1,414 @@
+
+/* Ward 42 Fix-It - Street Smart Mamelodi Theme */
+
+:root {
+    --charcoal: #333D42;
+    --terracotta: #B9532B;
+    --sand: #D8BBA2;
+    --cream: #F5F1EA;
+    --white: #FFFFFF;
+}
+
+/* Main website styling */
+
+body {
+    background-color: var(--cream);
+    color: var(--charcoal);
+    font-family: Arial, sans-serif;
+}
+
+
+/* Street Smart Mamelodi Header */
+
+.site-header {
+    background-color: var(--cream);
+    color: var(--charcoal);
+    border-bottom: 3px solid var(--terracotta);
+}
+
+
+/* Street Smart Mamelodi Navigation */
+
+.site-nav {
+    background-color: var(--cream);
+    border-bottom: 1px solid var(--sand);
+}
+
+.nav-link-custom {
+    color: var(--charcoal);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 0;
+    display: inline-block;
+}
+
+.nav-link-custom:hover,
+.nav-link-custom:focus-visible {
+    color: var(--terracotta);
+    text-decoration: underline;
+}
+
+.nav-link-custom:focus-visible {
+    outline: 3px solid var(--terracotta);
+    outline-offset: 4px;
+}
+
+
+/* Modern Header Layout */
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 80px;
+}
+
+/* Application Branding */
+
+.site-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--charcoal);
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.site-brand:hover {
+    color: var(--terracotta);
+}
+
+/* Terracotta Brand Symbol */
+
+.brand-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background-color: var(--terracotta);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* Navigation */
+
+.header-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Mobile Adjustments */
+
+@media (max-width: 576px) {
+    .site-brand {
+        font-size: 1.05rem;
+    }
+
+    .brand-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .header-content {
+        min-height: 70px;
+    }
+}
+
+
+/* ===================================
+   STREET SMART MAMELODI - HOME PAGE
+   =================================== */
+
+/* Main Hero Section */
+
+.street-hero {
+    background-color: var(--cream);
+    border: 1px solid var(--sand);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* Hero Text */
+
+.hero-text {
+    padding: 2rem 2rem 0;
+}
+
+.hero-label {
+    color: #A74726;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 0.75rem;
+}
+
+.hero-text h1 {
+    color: var(--charcoal);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.hero-tagline {
+    color: #555555;
+    font-size: 1.2rem;
+}
+
+.hero-description {
+    max-width: 650px;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* Neighbourhood Illustration */
+
+.hero-art {
+    background-color: var(--cream);
+}
+
+.hero-image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Report Button Area */
+
+.hero-action {
+    padding: 1rem;
+    background-color: var(--cream);
+}
+
+.report-action {
+    display: block;
+    width: 100%;
+    background-color: var(--terracotta);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 1.2rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.report-action:disabled {
+    opacity: 1;
+    cursor: not-allowed;
+}
+
+.action-note {
+    text-align: center;
+    font-size: 0.85rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+    color: var(--charcoal);
+}
+
+/* How It Works */
+
+.how-it-works h2 {
+    color: var(--charcoal);
+    font-weight: 700;
+}
+
+.how-it-works li {
+    margin-bottom: 0.5rem;
+}
+
+/* Mobile Responsiveness */
+
+@media (max-width: 576px) {
+
+    .hero-text {
+        padding: 1.5rem 1rem 0;
+    }
+
+    .hero-description {
+        font-size: 0.95rem;
+    }
+
+    .report-action {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+
+}
+
+
+/* Home Page Report Link */
+
+a.report-action,
+a.report-action:visited {
+    color: white;
+    text-decoration: none;
+}
+
+a.report-action:hover {
+    background-color: #994322;
+    color: white;
+}
+
+a.report-action:focus-visible {
+    outline: 3px solid var(--charcoal);
+    outline-offset: 3px;
+}
+
+
+/* ===================================
+   REPORT CONFIRMATION PAGE
+   =================================== */
+
+.success-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    background-color: #E7F3ED;
+    color: #287A53;
+    border-radius: 50%;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.reference-box {
+    background-color: var(--cream);
+    border: 1px solid var(--sand);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.reference-number {
+    color: var(--terracotta);
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+    overflow-wrap: anywhere;
+}
+
+
+/* ===================================
+   CHECK REPORT STATUS PAGE
+   =================================== */
+
+.status-result {
+    background-color: var(--cream);
+    border: 1px solid var(--sand);
+    border-left: 5px solid var(--terracotta);
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.status-result h2 {
+    color: var(--charcoal);
+    font-weight: 700;
+}
+
+.status-result p {
+    margin-bottom: 0.75rem;
+}
+
+.status-result p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ===================================
+   RESPONSIVE NAVIGATION
+   =================================== */
+
+.header-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Tablet and Mobile Navigation */
+
+@media (max-width: 768px) {
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .header-links {
+        width: 100%;
+        gap: 0.75rem 1.25rem;
+    }
+
+    .nav-link-custom {
+        font-size: 0.95rem;
+    }
+
+}
+
+
+/* ===================================
+   STREET SMART MAMELODI DASHBOARD
+   =================================== */
+
+.dashboard-card {
+    background-color: var(--cream);
+    border: 1px solid var(--sand);
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.dashboard-card h2 {
+    color: var(--charcoal);
+    font-weight: 600;
+}
+
+.dashboard-number {
+    color: var(--terracotta);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.dashboard-section {
+    background-color: #FFFFFF;
+    border: 1px solid var(--sand);
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.dashboard-section h2 {
+    color: var(--charcoal);
+    font-weight: 700;
+}
+
+.dashboard-section .progress {
+    height: 12px;
+    background-color: #F0E6DC;
+    border-radius: 8px;
+}
+
+.dashboard-bar {
+    background-color: var(--terracotta);
+}
+
+@media (max-width: 576px) {
+    .dashboard-card {
+        padding: 1rem;
+    }
+
+    .dashboard-section {
+        padding: 1rem;
+    }
+}
+

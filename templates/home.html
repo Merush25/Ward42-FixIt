@@ -1,0 +1,137 @@
+
+{% extends "base.html" %}
+
+{% block title %}Home | Ward 42 Fix-It{% endblock %}
+
+{% block content %}
+
+<!-- Street Smart Mamelodi Hero Section -->
+<section class="street-hero"
+         aria-labelledby="hero-title">
+
+    <div class="hero-text">
+
+        <p class="hero-label">
+            STREET &amp; INFRASTRUCTURE SERVICES
+        </p>
+
+        <h1 id="hero-title">
+            A better neighbourhood.
+        </h1>
+
+        <p class="hero-tagline">
+            Spot it. Report it. Track it.
+        </p>
+
+        <p class="hero-description">
+            Help improve Ward 42, Mamelodi East,
+            by reporting potholes, water leaks,
+            broken streetlights and illegal dumping.
+        </p>
+
+    </div>
+
+    <!-- Neighbourhood Illustration -->
+    <div class="hero-art">
+        <img
+            src="{{ url_for('static', filename='images/neighbourhood.svg') }}"
+            alt=""
+            class="hero-image">
+    </div>
+
+    <!-- Main Action Button -->
+    <div class="hero-action">
+
+        <a href="{{ url_for('report_fault') }}"
+           class="report-action">
+
+            <span aria-hidden="true">📷</span>
+            SUBMIT A REPORT
+
+        </a>
+
+        <p class="action-note">
+            Complete the reporting form to help
+            improve your neighbourhood.
+            You'll receive a unique reference number
+            to track your report.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- How It Works -->
+<section class="how-it-works mt-5"
+         aria-labelledby="how-it-works-title">
+
+    <h2 id="how-it-works-title">
+        How It Works
+    </h2>
+
+    <ol>
+        <li>Report a problem in your area.</li>
+        <li>Upload a photo if you have one.</li>
+        <li>Receive your unique reference number.</li>
+        <li>Use your reference number to check the status.</li>
+    </ol>
+
+</section>
+
+<!-- Tutorial Video Section -->
+<section class="tutorial-section mt-5 mb-5"
+         aria-labelledby="tutorial-title">
+
+    <h2 id="tutorial-title">
+        Watch Our Tutorial
+    </h2>
+
+    <p id="tutorial-description">
+        Not sure how to report a problem?
+        Watch this short video to learn how to submit
+        a report and track its progress.
+    </p>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-9">
+
+            <video
+                controls
+                preload="metadata"
+                playsinline
+                class="w-100 rounded"
+                aria-describedby="tutorial-description">
+
+                <!-- WebM Video -->
+                <source
+                    src="{{ url_for('static', filename='videos/ward42-tutorial.webm') }}"
+                    type="video/webm">
+
+                <!-- MP4 Video -->
+                <source
+                    src="{{ url_for('static', filename='videos/ward42-tutorial.mp4') }}"
+                    type="video/mp4">
+
+                <!-- English Captions -->
+                <track
+                    kind="captions"
+                    src="{{ url_for('static', filename='captions/ward42-tutorial.vtt') }}"
+                    srclang="en"
+                    label="English"
+                    default>
+
+                Your browser does not support HTML5 video.
+
+            </video>
+
+        </div>
+    </div>
+
+    <p class="text-center mt-3">
+        Follow the steps above if you prefer
+        written instructions.
+    </p>
+
+</section>
+
+{% endblock %}

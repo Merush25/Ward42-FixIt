@@ -1,0 +1,78 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Report Submitted | Ward 42 Fix-It
+{% endblock %}
+
+{% block content %}
+
+<!-- Successful Report Confirmation -->
+
+<section id="report-success"
+         class="bg-white p-4 p-md-5 rounded shadow-sm text-center"
+         aria-labelledby="success-title">
+
+    <!-- Success Icon -->
+    <div class="mb-3">
+
+        <span class="success-icon"
+              aria-hidden="true">
+            &#10003;
+        </span>
+
+    </div>
+
+    <!-- Success Heading -->
+    <h1 id="success-title">
+        Report Submitted Successfully!
+    </h1>
+
+    <p class="lead">
+        Thank you for helping improve Ward 42.
+    </p>
+
+
+    <!-- Reference Number -->
+    <div class="reference-box my-4">
+
+        <h2 class="h5">
+            Your Reference Number
+        </h2>
+
+        <p class="reference-number">
+            {{ reference }}
+        </p>
+
+    </div>
+
+
+    <!-- Confirmation Details -->
+    <p>
+        Please keep your reference number safe.
+        You will need it to check the progress
+        of your report.
+    </p>
+
+    <p>
+        Your report has been recorded with
+        the status <strong>Open</strong>.
+    </p>
+
+
+    <!-- Return Home -->
+    <a href="{{ url_for('home') }}"
+       class="report-action mt-4">
+        RETURN HOME
+    </a>
+
+</section>
+
+
+<!-- Clear Saved Draft After Success -->
+<script
+    src="{{ url_for('static', filename='js/report_success.js') }}"
+    defer>
+</script>
+
+{% endblock %}

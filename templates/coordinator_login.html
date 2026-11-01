@@ -1,0 +1,112 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Coordinator Login | Ward 42 Fix-It
+{% endblock %}
+
+{% block content %}
+
+<section class="row justify-content-center">
+
+    <div class="col-12 col-md-8 col-lg-5">
+
+        <div class="bg-white p-4 p-md-5 rounded shadow-sm">
+
+            <div class="text-center mb-4">
+
+                <div class="mb-3">
+                    <span class="brand-icon mx-auto"
+                          aria-hidden="true">42</span>
+                </div>
+
+                <p class="hero-label">
+                    SECURE COORDINATOR ACCESS
+                </p>
+
+                <h1>Coordinator Login</h1>
+
+                <p>
+                    Sign in to manage Ward 42
+                    community service reports.
+                </p>
+
+            </div>
+
+            {% if error %}
+                <div class="alert alert-danger"
+                     role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="POST"
+                  action="{{ url_for('coordinator_login') }}">
+
+                <!-- CSRF Protection -->
+                <input type="hidden"
+                       name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <!-- Username -->
+                <div class="mb-3">
+
+                    <label for="username"
+                           class="form-label">
+                        Username
+                    </label>
+
+                    <input type="text"
+                           id="username"
+                           name="username"
+                           class="form-control"
+                           autocomplete="username"
+                           maxlength="30"
+                           required>
+
+                </div>
+
+                <!-- Password -->
+                <div class="mb-4">
+
+                    <label for="password"
+                           class="form-label">
+                        Password
+                    </label>
+
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           class="form-control"
+                           autocomplete="current-password"
+                           required>
+
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit"
+                        class="report-action">
+                    SIGN IN
+                </button>
+
+            </form>
+
+            <div class="text-center mt-4">
+
+                <p class="small text-muted">
+                    Authorised coordinators only.
+                </p>
+
+                <a href="{{ url_for('home') }}">
+                    Return to Home
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

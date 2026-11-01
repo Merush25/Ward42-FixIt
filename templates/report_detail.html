@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Report {{ report.reference }} | Ward 42 Fix-It{% endblock %}
+
+{% block content %}
+<section class="bg-white p-4 p-md-5 rounded shadow-sm">
+    <p class="hero-label">COORDINATOR MANAGEMENT</p>
+    <h1>Report {{ report.reference }}</h1>
+    <p class="text-muted">Report details and photograph are visible to authorised coordinators only.</p>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-6">
+            <dl class="row">
+                <dt class="col-sm-4">Reference</dt><dd class="col-sm-8">{{ report.reference }}</dd>
+                <dt class="col-sm-4">Category</dt><dd class="col-sm-8">{{ report.category }}</dd>
+                <dt class="col-sm-4">Street</dt><dd class="col-sm-8">{{ report.street }}</dd>
+                <dt class="col-sm-4">Description</dt><dd class="col-sm-8" style="white-space: pre-line;">{{ report.description }}</dd>
+                <dt class="col-sm-4">Status</dt><dd class="col-sm-8">{{ report.status }}</dd>
+                <dt class="col-sm-4">Submitted</dt><dd class="col-sm-8">{{ report.created_at }}</dd>
+                <dt class="col-sm-4">Resident name</dt><dd class="col-sm-8">{{ report.reporter_name }}</dd>
+                <dt class="col-sm-4">Cellphone</dt><dd class="col-sm-8">{{ report.reporter_cell }}</dd>
+            </dl>
+        </div>
+        <div class="col-12 col-lg-6">
+            <h2 class="h4">Reported photograph</h2>
+            {% if report.photo_path %}
+                <img src="{{ url_for('coordinator_report_photo', report_id=report.id) }}"
+                     alt="Photograph attached to report {{ report.reference }} showing {{ report.category|lower }} at {{ report.street }}"
+                     class="img-fluid rounded border" loading="lazy">
+                <p class="small text-muted mt-2">Original uploaded photograph.</p>
+            {% else %}
+                <p>No photograph was attached to this report.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{{ url_for('all_reports') }}" class="btn btn-outline-dark mt-3">Back to All Reports</a>
+</section>
+{% endblock %}

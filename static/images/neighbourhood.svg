@@ -1,0 +1,42 @@
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 1000 340">
+
+    <!-- Neighbourhood skyline -->
+    <path fill="#D8BBA2"
+          d="M0 250
+             H85 V190 H160 V225
+             H210 V145 H300 V220
+             H350 V105 H450 V220
+             H500 V175 H570 V250
+             H620 V160 H710 V225
+             H760 V185 H830 V225
+             H885 V135 H970 V225
+             H1000 V340 H0 Z"/>
+
+    <!-- Construction symbol -->
+    <g stroke="#B9532B"
+       stroke-width="10"
+       stroke-linecap="round"
+       fill="none">
+        <path d="M50 125 H125"/>
+        <path d="M90 125 V225"/>
+    </g>
+
+    <circle cx="125" cy="125"
+            r="10" fill="#B9532B"/>
+
+    <!-- Road -->
+    <path d="M0 340
+             L420 250
+             H580
+             L1000 340 Z"
+          fill="#77756F"/>
+
+    <!-- Road centre markings -->
+    <path d="M500 262 V340"
+          stroke="#F7DF9D"
+          stroke-width="9"
+          stroke-dasharray="25 15"/>
+
+</svg>

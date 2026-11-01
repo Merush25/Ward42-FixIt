@@ -1,0 +1,249 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | Ward 42 Fix-It
+{% endblock %}
+
+{% block content %}
+
+<section class="bg-white p-4 p-md-5 rounded shadow-sm">
+
+    <p class="hero-label">
+        COORDINATOR MANAGEMENT
+    </p>
+
+    <h1>Ward 42 Dashboard</h1>
+
+    <p class="lead">
+        Overview of community service reports
+        submitted by Ward 42 residents.
+    </p>
+
+    <!-- API Loading Message -->
+    <p id="dashboard-update-message"
+       class="small text-muted"
+       role="status"
+       aria-live="polite">
+        Loading latest dashboard statistics...
+    </p>
+
+
+    <!-- ==================================
+         KPI CARDS
+         ================================== -->
+
+    <div class="row g-3 my-4">
+
+        <!-- Total Reports -->
+        <div class="col-6 col-lg-3">
+
+            <div class="dashboard-card">
+
+                <h2 class="h6">
+                    Total Reports
+                </h2>
+
+                <p id="total-reports"
+                   class="dashboard-number">
+                    {{ summary.total_reports }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Open Reports -->
+        <div class="col-6 col-lg-3">
+
+            <div class="dashboard-card">
+
+                <h2 class="h6">Open</h2>
+
+                <p class="dashboard-number"
+                   data-status-card="Open">
+                    {{ summary.by_status["Open"] }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- In Progress Reports -->
+        <div class="col-6 col-lg-3">
+
+            <div class="dashboard-card">
+
+                <h2 class="h6">In Progress</h2>
+
+                <p class="dashboard-number"
+                   data-status-card="In progress">
+                    {{ summary.by_status["In progress"] }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Closed Reports -->
+        <div class="col-6 col-lg-3">
+
+            <div class="dashboard-card">
+
+                <h2 class="h6">Closed</h2>
+
+                <p class="dashboard-number"
+                   data-status-card="Closed">
+                    {{ summary.by_status["Closed"] }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================
+         DASHBOARD BREAKDOWN
+         ================================== -->
+
+    <div class="row g-4">
+
+
+        <!-- REPORTS BY CATEGORY -->
+        <div class="col-12 col-lg-6">
+
+            <section class="dashboard-section">
+
+                <h2 class="h4">
+                    Reports by Category
+                </h2>
+
+                <p class="text-muted small">
+                    Number of reports for each problem type.
+                </p>
+
+                {% for category, count in
+                   summary.by_category.items() %}
+
+                <div class="mb-3"
+                     data-dashboard-group="by_category"
+                     data-dashboard-key="{{ category }}">
+
+                    <div class="d-flex justify-content-between mb-1">
+
+                        <span>{{ category }}</span>
+
+                        <strong class="dashboard-count">
+                            {{ count }}
+                        </strong>
+
+                    </div>
+
+                    <div class="progress"
+                         role="progressbar"
+                         aria-label="{{ category }} reports"
+                         aria-valuenow="{{ count }}"
+                         aria-valuemin="0"
+                         aria-valuemax="{{ summary.total_reports if summary.total_reports > 0 else 1 }}">
+
+                        <div class="progress-bar dashboard-bar"
+                             style="width: {{ (count / summary.total_reports * 100) if summary.total_reports else 0 }}%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </section>
+
+        </div>
+
+
+        <!-- REPORTS BY STATUS -->
+        <div class="col-12 col-lg-6">
+
+            <section class="dashboard-section">
+
+                <h2 class="h4">
+                    Reports by Status
+                </h2>
+
+                <p class="text-muted small">
+                    Current progress of submitted reports.
+                </p>
+
+                {% for status, count in
+                   summary.by_status.items() %}
+
+                <div class="mb-3"
+                     data-dashboard-group="by_status"
+                     data-dashboard-key="{{ status }}">
+
+                    <div class="d-flex justify-content-between mb-1">
+
+                        <span>{{ status }}</span>
+
+                        <strong class="dashboard-count">
+                            {{ count }}
+                        </strong>
+
+                    </div>
+
+                    <div class="progress"
+                         role="progressbar"
+                         aria-label="{{ status }} reports"
+                         aria-valuenow="{{ count }}"
+                         aria-valuemin="0"
+                         aria-valuemax="{{ summary.total_reports if summary.total_reports > 0 else 1 }}">
+
+                        <div class="progress-bar dashboard-bar"
+                             style="width: {{ (count / summary.total_reports * 100) if summary.total_reports else 0 }}%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </section>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================
+         NAVIGATION BUTTONS
+         ================================== -->
+
+    <div class="d-flex flex-wrap gap-3 mt-4">
+
+        <a href="{{ url_for('all_reports') }}"
+           class="btn btn-dark">
+            View All Reports
+        </a>
+
+        <a href="{{ url_for('coordinator_panel') }}"
+           class="btn btn-outline-dark">
+            Coordinator Panel
+        </a>
+
+    </div>
+
+</section>
+
+<!-- External Dashboard JavaScript -->
+<script
+    src="{{ url_for('static', filename='js/dashboard.js') }}"
+    defer>
+</script>
+
+{% endblock %}

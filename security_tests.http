@@ -1,0 +1,105 @@
+# WARD 42 FIX-IT - SECURITY TEST REQUESTS
+# Run with the REST Client extension in VS Code while Flask is running locally.
+# Run one test at a time. Check the expected result in each heading.
+# IMPORTANT: Do not commit real session cookies or CSRF tokens to source control.
+
+@baseUrl = http://127.0.0.1:5000
+
+### TEST 01 - Public report form - EXPECT 200 OK
+GET {{baseUrl}}/report
+
+### TEST 02 - Protected coordinator panel - EXPECT redirect to /coordinator/login
+# REST Client may follow the redirect and show the login page with 200 OK.
+GET {{baseUrl}}/coordinator
+
+### TEST 03 - Protected all-reports page - EXPECT redirect to login
+GET {{baseUrl}}/coordinator/reports
+
+### TEST 04 - Protected dashboard - EXPECT redirect to login
+GET {{baseUrl}}/coordinator/dashboard
+
+### TEST 05 - Unauthenticated JSON API - EXPECT 401 Unauthorized
+GET {{baseUrl}}/api/reports/summary
+Accept: application/json
+
+### TEST 06 - Report submission without CSRF token - EXPECT 400 Bad Request
+# This tests CSRF enforcement, NOT description validation.
+POST {{baseUrl}}/report
+Content-Type: application/x-www-form-urlencoded
+
+category=Pothole&street=Test+Street&description=Test+report+with+enough+characters&reporter_name=Test+Resident&reporter_cell=0821234567
+
+### TEST 07 - Login without CSRF token - EXPECT 400 Bad Request
+POST {{baseUrl}}/coordinator/login
+Content-Type: application/x-www-form-urlencoded
+
+username=invalid_test_user&password=invalid_test_password
+
+# -----------------------------------------------------------------------------
+# ADVANCED TESTS 08-10: REQUIRE A VALID CSRF TOKEN AND ITS MATCHING SESSION COOKIE.
+# First open GET /report or GET /coordinator/login and obtain the current
+# csrf_token form value and matching session cookie in the same browser session.
+# Do NOT run these requests until those values have been set correctly.
+# In the REST Client extension, a missing/wrong token will produce 400 and does
+# not prove the intended SQL injection, XSS, or upload-validation check.
+# Delete real values from this file after testing.
+# -----------------------------------------------------------------------------
+
+@csrfToken = REPLACE_WITH_VALID_CSRF_TOKEN
+@sessionCookie = REPLACE_WITH_MATCHING_SESSION_COOKIE_VALUE
+
+### TEST 08 - SQL injection attempt in coordinator login - EXPECT login REJECTED
+# Valid CSRF + cookie required; the username must not bypass authentication.
+# Expected login message: Invalid username or password.
+POST {{baseUrl}}/coordinator/login
+Content-Type: application/x-www-form-urlencoded
+Cookie: session={{sessionCookie}}
+
+csrf_token={{csrfToken}}&username=%27+OR+1%3D1+--&password=definitely_wrong_password
+
+### TEST 09 - XSS probe in report description - EXPECT safe rendering
+# Valid CSRF + cookie required. Creates a TEST report if accepted.
+# After submitting, inspect how its description appears on the coordinator page.
+# It should appear as text, never execute JavaScript.
+POST {{baseUrl}}/report
+Content-Type: application/x-www-form-urlencoded
+Cookie: session={{sessionCookie}}
+
+csrf_token={{csrfToken}}&category=Pothole&street=Security+Test+Street&description=%3Cscript%3Ealert%281%29%3C%2Fscript%3E&reporter_name=Security+Test&reporter_cell=0821234567
+
+### TEST 10 - Invalid photo type - EXPECT 400 Bad Request
+# Valid CSRF + cookie required; the TXT file must be rejected by save_photo().
+POST {{baseUrl}}/report
+Content-Type: multipart/form-data; boundary=Ward42TestBoundary
+Cookie: session={{sessionCookie}}
+
+--Ward42TestBoundary
+Content-Disposition: form-data; name="csrf_token"
+
+{{csrfToken}}
+--Ward42TestBoundary
+Content-Disposition: form-data; name="category"
+
+Pothole
+--Ward42TestBoundary
+Content-Disposition: form-data; name="street"
+
+Security Test Street
+--Ward42TestBoundary
+Content-Disposition: form-data; name="description"
+
+Testing invalid photo file rejection.
+--Ward42TestBoundary
+Content-Disposition: form-data; name="reporter_name"
+
+Security Test
+--Ward42TestBoundary
+Content-Disposition: form-data; name="reporter_cell"
+
+0821234567
+--Ward42TestBoundary
+Content-Disposition: form-data; name="photo"; filename="not_an_image.txt"
+Content-Type: text/plain
+
+This is not an image.
+--Ward42TestBoundary--

@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}All Reports | Ward 42 Fix-It{% endblock %}
+
+{% block content %}
+<section class="bg-white p-4 p-md-5 rounded shadow-sm">
+    <p class="hero-label">COORDINATOR MANAGEMENT</p>
+    <h1>All Reports</h1>
+    <p>View, search, filter and manage municipal service reports submitted by Ward 42 residents.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="status">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="GET" action="{{ url_for('all_reports') }}" class="row g-3 mb-4">
+        <div class="col-12 col-md-5">
+            <label for="category" class="form-label">Filter by Category</label>
+            <select id="category" name="category" class="form-select">
+                <option value="">All Categories</option>
+                {% for item in categories %}
+                    <option value="{{ item }}" {% if selected_category == item %}selected{% endif %}>{{ item }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-12 col-md-5">
+            <label for="status" class="form-label">Filter by Status</label>
+            <select id="status" name="status" class="form-select">
+                <option value="">All Statuses</option>
+                {% for item in statuses %}
+                    <option value="{{ item }}" {% if selected_status == item %}selected{% endif %}>{{ item }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-12 col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-dark w-100">FILTER</button>
+        </div>
+    </form>
+
+    <div class="mb-4">
+        <label for="live-report-search" class="form-label fw-bold">Search Reports</label>
+        <input type="search" id="live-report-search" class="form-control"
+               placeholder="Search reference, category, street or status..."
+               autocomplete="off" aria-describedby="search-help">
+        <p id="search-help" class="form-text">Results update automatically as you type. The search applies to reports currently displayed by the selected filters.</p>
+    </div>
+
+    <div class="alert alert-light border" role="status" aria-live="polite">
+        <strong>Reports displayed:</strong> <span id="live-result-count">{{ reports|length }}</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+            <caption>Ward 42 municipal service reports</caption>
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Reference</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Street</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Photo</th>
+                    <th scope="col">Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                    <tr data-report-row data-search-text="{{ (
+                        report.reference ~ ' ' ~ report.category ~ ' ' ~
+                        report.street ~ ' ' ~ report.status ~ ' ' ~
+                        report.created_at
+                    )|lower }}">
+                        <td>
+                            <a class="fw-bold" href="{{ url_for('report_detail', report_id=report.id) }}">
+                                {{ report.reference }}
+                            </a>
+                            <div><small class="text-muted">View details</small></div>
+                        </td>
+                        <td>{{ report.category }}</td>
+                        <td>{{ report.street }}</td>
+                        <td>
+                            {% if report.status == 'Open' %}
+                                <span class="badge bg-success">Open</span>
+                            {% elif report.status == 'In progress' %}
+                                <span class="badge bg-warning text-dark">In progress</span>
+                            {% elif report.status == 'Closed' %}
+                                <span class="badge bg-secondary">Closed</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ report.created_at }}</td>
+                        <td>
+                            {% if report.photo_path %}
+                                <a href="{{ url_for('report_detail', report_id=report.id) }}"
+                                   aria-label="View report {{ report.reference }} with full photograph">
+                                    <img src="{{ url_for('coordinator_report_thumbnail', report_id=report.id) }}"
+                                         alt="Thumbnail of {{ report.category|lower }} reported at {{ report.street }}"
+                                         width="88" height="64" loading="lazy"
+                                         class="rounded border"
+                                         style="object-fit: cover; max-width: 100%;">
+                                </a>
+                            {% else %}
+                                <span class="text-muted">No photo</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="POST" action="{{ url_for('update_status', report_id=report.id) }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <label for="status-{{ report.id }}" class="visually-hidden">
+                                    Update status for {{ report.reference }}
+                                </label>
+                                <select id="status-{{ report.id }}" name="status" class="form-select form-select-sm mb-2">
+                                    {% for item in statuses %}
+                                        <option value="{{ item }}" {% if report.status == item %}selected{% endif %}>{{ item }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-dark btn-sm w-100">UPDATE</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr id="live-empty-message" {% if reports %}style="display: none;"{% endif %}>
+                    <td colspan="7" class="text-center py-4">No reports found. Try a different search or filter.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ url_for('coordinator_panel') }}" class="btn btn-outline-dark mt-3">Back to Coordinator Panel</a>
+</section>
+
+<script src="{{ url_for('static', filename='js/reports.js') }}" defer></script>
+{% endblock %}

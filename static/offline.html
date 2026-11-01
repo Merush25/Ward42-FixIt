@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#B9532B">
+
+    <title>Offline | Ward 42 Fix-It</title>
+
+    <style>
+        /* Street Smart Mamelodi Offline Theme */
+
+        :root {
+            --charcoal: #333D42;
+            --terracotta: #B9532B;
+            --sand: #D8BBA2;
+            --cream: #F5F1EA;
+            --white: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            min-height: 100vh;
+            background-color: var(--cream);
+            color: var(--charcoal);
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        main {
+            width: 100%;
+            max-width: 520px;
+            background-color: var(--white);
+            padding: 36px 28px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .app-name {
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 28px;
+        }
+
+        .offline-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background-color: var(--terracotta);
+            color: var(--white);
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .draft-info {
+            background-color: var(--cream);
+            border: 1px solid var(--sand);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 28px 0;
+            text-align: left;
+        }
+
+        .draft-info h2 {
+            font-size: 1.2rem;
+            margin-top: 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--terracotta);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:focus-visible {
+            outline: 3px solid var(--charcoal);
+            outline-offset: 3px;
+        }
+
+        .small-text {
+            margin-top: 20px;
+            color: #555555;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+
+        <p class="app-name">WARD 42 FIX-IT</p>
+
+        <div class="offline-icon"
+             aria-hidden="true">
+            42
+        </div>
+
+        <h1>You're Offline</h1>
+
+        <p>
+            Your internet connection is currently
+            unavailable.
+        </p>
+
+        <section class="draft-info"
+                 aria-labelledby="draft-title">
+
+            <h2 id="draft-title">
+                Your Report Draft
+            </h2>
+
+            <p id="draft-status" role="status">
+                Checking for a saved draft...
+            </p>
+
+            <p>
+                You need an internet connection
+                to submit a new report or check
+                the latest report status.
+            </p>
+
+        </section>
+
+        <button type="button"
+                onclick="window.location.reload()">
+            TRY AGAIN
+        </button>
+
+        <p class="small-text">
+            Ward 42 Fix-It |
+            Street Smart Mamelodi
+        </p>
+
+    </main>
+
+    <script>
+        // Check whether a report draft exists
+        // on this device.
+
+        const draftStatus = document.getElementById(
+            "draft-status"
+        );
+
+        try {
+            const savedDraft = localStorage.getItem(
+                "ward42_report_draft_v1"
+            );
+
+            if (savedDraft) {
+                draftStatus.textContent =
+                    "A saved draft was found on this device. " +
+                    "Your report details can be restored " +
+                    "when you return to the reporting form.";
+            } else {
+                draftStatus.textContent =
+                    "No saved draft was found on this device.";
+            }
+
+        } catch (error) {
+            draftStatus.textContent =
+                "Unable to check your saved draft.";
+        }
+    </script>
+
+</body>
+</html>
