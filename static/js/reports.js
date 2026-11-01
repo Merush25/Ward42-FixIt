@@ -2,88 +2,81 @@
 /*
 ==========================================
 WARD 42 FIX-IT
-Live Report Searching
+Live Report Searching and Filtering
 ==========================================
 */
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const searchInput = document.getElementById(
-        "live-report-search"
-    );
+    const searchInput = document.getElementById("live-report-search");
+    const categoryFilter = document.getElementById("category");
+    const statusFilter = document.getElementById("status");
 
-    const reportRows = document.querySelectorAll(
-        "[data-report-row]"
-    );
+    const reportRows = document.querySelectorAll("[data-report-row]");
+    const resultCount = document.getElementById("live-result-count");
+    const emptyMessage = document.getElementById("live-empty-message");
 
-    const resultCount = document.getElementById(
-        "live-result-count"
-    );
-
-    const emptyMessage = document.getElementById(
-        "live-empty-message"
-    );
-
-    // Only run on the All Reports page
-    if (!searchInput || !resultCount) {
+    // Only run on the All Reports page.
+    if (!searchInput || !categoryFilter || !statusFilter || !resultCount) {
         return;
     }
 
-
-    // Search the currently displayed reports
     function filterReports() {
 
-        const searchText = searchInput.value
-            .trim()
-            .toLowerCase();
+        const searchText = searchInput.value.trim().toLowerCase();
+        const selectedCategory = categoryFilter.value.trim().toLowerCase();
+        const selectedStatus = statusFilter.value.trim().toLowerCase();
 
         let visibleCount = 0;
 
         reportRows.forEach(function (row) {
 
-            // Search only actual report details,
-            // not the status dropdown options
-            const reportText = (
-                row.dataset.searchText || ""
-            ).toLowerCase();
+            const reportText = (row.dataset.searchText || "").toLowerCase();
 
-            const matches = reportText.includes(
-                searchText
-            );
+            const category = row.cells[1].textContent.trim().toLowerCase();
+            const status = row.cells[3].textContent.trim().toLowerCase();
 
-            // Show or hide the report
-            row.style.display = matches ? "" : "none";
+            const matchesSearch = reportText.includes(searchText);
 
-            if (matches) {
+            const matchesCategory =
+                !selectedCategory || category === selectedCategory;
+
+            const matchesStatus =
+                !selectedStatus || status === selectedStatus;
+
+            const matchesAll =
+                matchesSearch && matchesCategory && matchesStatus;
+
+            row.style.display = matchesAll ? "" : "none";
+
+            if (matchesAll) {
                 visibleCount++;
             }
-
         });
 
-
-        // Update the visible report count
         resultCount.textContent = visibleCount;
 
-
-        // Show an empty-state message if necessary
         if (emptyMessage) {
-
             emptyMessage.style.display =
                 visibleCount === 0 ? "" : "none";
-
         }
-
     }
 
+    // Filter immediately without reloading.
+    searchInput.addEventListener("input", filterReports);
+    categoryFilter.addEventListener("change", filterReports);
+    statusFilter.addEventListener("change", filterReports);
 
-    // Update immediately as the user types
-    searchInput.addEventListener(
-        "input",
-        filterReports
-    );
+    // Prevent the existing filter form from reloading the page.
+    const filterForm = categoryFilter.closest("form");
 
+    if (filterForm) {
+        filterForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            filterReports();
+        });
+    }
 
-    // Initialise the results when the page loads
+    // Display the correct count on initial page load.
     filterReports();
-
 });
