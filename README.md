@@ -109,3 +109,79 @@ Assignment: Summative Project (SS3)
 Institution: STADIO
 
 Project: Ward 42 Fix-It
+
+
+## Application Testing
+
+The following tests can be used to verify the main
+features of Ward 42 Fix-It.
+
+### 1. Start the Application
+
+Install the dependencies:
+
+    pip install -r requirements.txt
+
+Start Flask:
+
+    python -m flask --app app run
+
+Open http://127.0.0.1:5000/
+
+### 2. Resident Functionality
+
+- Open the Report a Fault page.
+- Submit a report using fictitious test information.
+- Attach a JPEG, PNG or WebP photograph.
+- Confirm that a unique reference number is generated.
+- Use Check Status to retrieve the report status.
+- Verify that an invalid cellphone number is rejected.
+- Verify that photographs larger than 2 MB are rejected.
+
+### 3. Coordinator Functionality
+
+- Create a test coordinator using create_coordinator.py.
+- Log in using the test credentials.
+- Open the All Reports page.
+- Test the live category and status filters.
+- Update a report from Open to In progress.
+- Open the Dashboard and verify the report totals.
+
+### 4. Security Testing
+
+The security_tests.http file contains requests for
+testing application security.
+
+Security controls include:
+
+- Server-side input validation
+- CSRF protection
+- Parameterised SQL queries
+- Authentication and password hashing
+- Protected coordinator pages
+- Photograph validation
+
+### 5. PWA and Offline Testing
+
+- Open the application in Google Chrome.
+- Inspect the manifest in Developer Tools.
+- Check the Service Worker registration.
+- Inspect the application Cache Storage.
+- Disable network access and verify the offline page.
+- Restore the network connection.
+
+### Offline Limitations
+
+The PWA supports limited offline functionality.
+
+Residents can recover previously saved text drafts.
+However, submitting new reports and retrieving updated
+report statuses requires an internet connection.
+
+### Test Data and Privacy
+
+Only fictitious personal information should be used
+during testing.
+
+Do not commit the SQLite database, uploaded photographs,
+passwords or application secret keys to GitHub.
