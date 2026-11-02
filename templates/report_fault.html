@@ -225,6 +225,10 @@ Report a Fault | Ward 42 Fix-It
                 JPEG, PNG or WebP. Maximum 2 MB.
             </div>
 
+            <p id="photo-client-error"
+                class="text-danger small"
+                role="alert"
+                aria-live="polite"></p>
             {% if errors.get("photo") %}
                 <p class="text-danger small mt-1"
                    role="alert">

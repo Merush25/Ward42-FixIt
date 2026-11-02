@@ -7,7 +7,7 @@ Progressive Web App Service Worker
 */
 
 // Change this version when cached app files change.
-const CACHE_NAME = "ward42-shell-v2";
+const CACHE_NAME = "ward42-shell-v3";
 
 // Essential public application files.
 const APP_SHELL = [

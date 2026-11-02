@@ -24,6 +24,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const draftMessage = document.getElementById("draft-message");
     const clearButton = document.getElementById("clear-draft");
+    
+    const photoInput = document.getElementById("photo");
+    const photoError = document.getElementById("photo-client-error");
+
+    photoInput.addEventListener("change", function () {
+
+        photoError.textContent = "";
+
+        const photo = photoInput.files[0];
+
+        if (!photo) {
+            return;
+        }
+
+        const maxSize = 2 * 1024 * 1024;
+
+        if (photo.size > maxSize) {
+
+            photoInput.value = "";
+
+            photoError.textContent =
+                "This photo exceeds 2 MB and was removed. Please select a smaller image.";
+        }
+    });
 
     const allowedCategories = [
         "Pothole",
