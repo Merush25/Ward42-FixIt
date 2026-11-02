@@ -185,3 +185,45 @@ during testing.
 
 Do not commit the SQLite database, uploaded photographs,
 passwords or application secret keys to GitHub.
+
+
+## Windows Startup Troubleshooting
+
+During development, the standard `flask run` command
+did not start the application successfully in PowerShell.
+
+The application was successfully started using:
+
+    python -m flask --app app run
+
+This command runs Flask through the active Python
+environment and explicitly identifies app.py as the
+application entry point.
+
+### Steps if Flask Does Not Start
+
+1. Open the Ward42-FixIt project in VS Code.
+2. Open a new PowerShell terminal.
+3. Activate the virtual environment:
+
+       .\venv\Scripts\Activate.ps1
+
+4. Install the project dependencies:
+
+       python -m pip install -r requirements.txt
+
+5. Start the Flask application:
+
+       python -m flask --app app run
+
+6. Open the following address in Chrome:
+
+       http://127.0.0.1:5000/
+
+### Development Environment
+
+The application uses Flask's development server
+for local testing only.
+
+A production deployment requires HTTPS and a
+production-ready WSGI server.
