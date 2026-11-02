@@ -1,4 +1,5 @@
 
+import os
 import re
 import secrets
 import sqlite3
@@ -55,11 +56,20 @@ app.config["SECRET_KEY"] = secret_file.read_text(
     encoding="utf-8"
 ).strip()
 
+
+# ==========================================
+# SECURE SESSION COOKIE SETTINGS
+# ==========================================
+
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
-# False for local HTTP testing; True for production HTTPS.
-app.config["SESSION_COOKIE_SECURE"] = False
+# Enable secure cookies when deployed with HTTPS.
+# Leave disabled for local HTTP development.
+app.config["SESSION_COOKIE_SECURE"] = (
+    os.environ.get("WARD42_HTTPS", "0") == "1"
+)
+
 
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(
     minutes=30
