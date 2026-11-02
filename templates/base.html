@@ -56,6 +56,12 @@
 
 <body>
 
+    <!-- Keyboard Accessibility -->
+    <a href="#main-content"
+       class="visually-hidden-focusable position-absolute top-0 start-0 bg-white p-3">
+        Skip to Main Content
+    </a>
+
     <!-- Website Header -->
     <header class="site-header">
 
@@ -112,7 +118,8 @@
     <!-- Main Content -->
     <main id="main-content"
           class="container my-4">
-
+            tabindex="-1">
+            
         {% block content %}
         {% endblock %}
 
